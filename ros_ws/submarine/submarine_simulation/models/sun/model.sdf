@@ -1,0 +1,13 @@
+<?xml version = "1.0" ?>
+<sdf version ="1.9">
+    <model name = "sun">\
+        <static>true</static>
+        <link name = "link">
+            <light name = "sun_light" type = "direction">
+                <direction>0.5 0.5 -1</direction>
+                <diffuse>1 1 1 1</diffuse>
+                <specular>0.2 0.2 0.2 1</specular>
+            </light>    
+        </link>
+    </model>
+</sdf>
