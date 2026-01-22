@@ -1,0 +1,37 @@
+<?xml version = "1.0" ?>
+<sdf version = "1.9">
+    <world name = "m1_underwater">
+        
+        <!--Phsyics : TimeScale-->
+        <physics name = "physics" type = "dart">
+            <max_step_size>0.001</max_step_size>
+            <real_time_factor>1.0</real_time_factor>
+        </physics>
+
+        <!--Scene : Underwater-->
+        <scene>
+            <!--background color-->
+            <background>0.02 0.08 0.10 1</background>
+            <ambient>0.05 0.10 0.12 1</ambient>
+
+            <!--Blur-->
+            <fog>
+                <type>linear</type>
+                <color>0.02 0.08 0.10 1</color>
+                <start>5</start>
+                <end>40</end>
+                <density>0.02</density>
+            </fog>
+        </scene>
+
+        <!--Base Light-->
+        <include>
+            <uri>model://sun</uri>
+        </include>
+        
+        <!--Standard Floor-->
+        <include>
+            <uri>model://ground_plane</uri>
+        </include>
+    </world>
+</sdf>
