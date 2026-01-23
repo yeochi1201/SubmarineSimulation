@@ -1,0 +1,45 @@
+<?xml version = "1.0" ?>
+<sdf version = "1.9">
+    <model name = "m1_submarine">
+        <static>false</static>
+        <link name = "base_link">
+
+            <!--Weight & Inerial-->
+            <inertial>
+                <mass>3750000.0</mass>
+                <inertia>
+                    <ixx>2200428125.0</ixx>
+                    <iyy>2200428125.0</iyy>
+                    <izz>43200000</izz>
+                    <ixy>0</ixy>
+                    <ixz>0</ixz>
+                    <iyz>0</iyz>
+                </inertia>
+            </inertial>
+
+            <!--physics-->
+            <collision name = "collision">
+                <geometry>
+                    <cylinder>
+                        <radius>4.8</radius>
+                        <length>83.5</length>
+                    </cylinder>
+                </geometry>
+            </collision>
+
+            <visual name = "visual">
+                <geometry>
+                    <cylinder>
+                        <radius>4.8</radius>
+                        <length>83.5</length>
+                    </cylinder>
+                </geometry>
+                <material>
+                    <ambient>0.1 0.15 0.15 1</ambient>
+                    <diffuse>0.1 0.15 0.15 1</diffuse>
+                </material>
+                <cast_shadows>false</cast_shadows>
+            </visual>
+        </link>
+    </model>
+</sdf>
