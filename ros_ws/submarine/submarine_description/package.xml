@@ -1,0 +1,15 @@
+<?xml version = "1.0"?>
+<package format = "3">
+    <name>submarine_description</name>
+    <version>0.0.1</version>
+    <description>Models (SDF/meshes) for the submarine</description>
+
+    <maintainer email = "yeochi1201@gmail.com">yeochi1201</maintainer>
+    <license>Apache-2.0</license>
+
+    <buildtool_depend>ament_cmake</buildtool_depend>
+
+    <export>
+        <build_type>ament_cmake</build_type>
+    </export>
+</package>
