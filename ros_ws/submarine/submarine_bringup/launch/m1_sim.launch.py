@@ -31,6 +31,25 @@ def set_resource_path(sim_pkg, desc_pkg):
             sim_pkg, ':', desc_pkg
         ]
     )
+    return set_gz_resource_path, set_ign_resource_path
+
+# Gazebo Execution
+def gazebo_execution(world_file):
+    gazebo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            PathJoinSubstitution([
+                FindPackageShare('ros_gz_sim'),
+                'launch',
+                'sim.launch.py'
+            ])
+        ),
+        launch_arguments={
+            'world': world_file,
+            'vervose': 'true'
+        }.items()
+    )
+    return gazebo
+
 
 # ROS 2 Launch File's Entry Point
 def generate_launch_description():
