@@ -50,6 +50,18 @@ def gazebo_execution(world_file):
     )
     return gazebo
 
+#Spawn Submarine
+def spawn_submarine(submarine_file):
+    submarine = ExecuteProcess(
+        cmd=[
+            'ros2', 'run', 'ros_gz_sim', 'create',
+            '-name', ',m1_submarine', '-world', 'm1_underwater',
+            '-file', submarine_file,
+            '-x', '0', '-y', '0', '-z', '10', '-R', '0', '-P', '0', '-Y', '0'
+        ],
+        output = 'screen'
+    )
+    return submarine
 
 # ROS 2 Launch File's Entry Point
 def generate_launch_description():
