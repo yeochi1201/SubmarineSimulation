@@ -16,6 +16,22 @@ def get_sdf_files(sim_pkg, desc_pkg):
     submarine_file = PathJoinSubstitution([desc_pkg, 'models', 'm1_submarine', 'model.sdf'])
     return world_file, submarine_file
 
+# Gazebo Resource Path
+def set_resource_path(sim_pkg, desc_pkg):
+    set_gz_resource_path = SetEnvironmentVariable(
+        name = 'GZ_SIM_RESOURCE_PATH',
+        value = [
+            sim_pkg, ':', desc_pkg
+        ]
+    )
+
+    set_ign_resource_path = SetEnvironmentVariable(
+        name = 'IGN_GAZEBO_RESOURCE_PATH',
+        value = [
+            sim_pkg, ':', desc_pkg
+        ]
+    )
+
 # ROS 2 Launch File's Entry Point
 def generate_launch_description():
     return
