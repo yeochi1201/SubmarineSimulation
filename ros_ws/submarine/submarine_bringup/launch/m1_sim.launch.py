@@ -65,4 +65,14 @@ def spawn_submarine(submarine_file):
 
 # ROS 2 Launch File's Entry Point
 def generate_launch_description():
-    return
+    sim_pkg, desc_pkg = get_package_paths()
+    world_file, submarine_file = get_sdf_files(sim_pkg, desc_pkg)
+    gz_resource_path, ign_resource_path = set_resource_path(sim_pkg, desc_pkg)
+    gazebo = gazebo_execution(world_file)
+    submarine = spawn_submarine(submarine_file)
+    return LaunchDescription([
+        gz_resource_path,
+        ign_resource_path,
+        gazebo,
+        submarine
+    ])
