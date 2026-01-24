@@ -1,6 +1,7 @@
 #include "m1_thruster_system.hpp"
 
 #include <atomic>
+#include <gz/plugin/Register.hh>
 #include <gz/sim/Entity.hh>
 #include <gz/sim/System.hh>
 #include <ignition/common/Console.hh>
@@ -133,6 +134,25 @@ namespace m1_plugins
     const Vector3d f_body = axis_body_ * (t * max_thrust_);
 
     // Convert to world frame using current world pose rotation
+    auto poseComp = _ecm.Component<ign::components::WorldPose>(link_entity_);
+    if(poseComp) return;
 
+    const auto poseW = poseComp->Data();
+    const Vector3d f_world = poseW.Rot().RotateVector(f_body);
+
+    // Apply Force
+    ign::Link link(link_entity_);
+    link.AddWorldForce(_ecm, f_world);
   }
 }
+
+//Plugin Regist
+IGNITION_ADD_PLUGIN
+(
+  m1_plugins::ThrusterSystem,
+  ignition::gazebo::System,
+  m1_plugins::ThrusterSystem::ISystemConfigure,
+  m1_plugins::ThrusterSystem::ISystemPreUpdate
+)
+
+IGNITION_ADD_PLUGIN_ALIAS(m1_plugins::ThrusterSystem, "m1_plugins::THrusterSystem")
