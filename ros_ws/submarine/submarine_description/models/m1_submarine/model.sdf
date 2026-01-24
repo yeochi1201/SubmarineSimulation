@@ -40,6 +40,9 @@
                 </material>
                 <cast_shadows>false</cast_shadows>
             </visual>
+
+            <linear_damping>0.02</linear_damping>
+            <angular_damping>0.01</angular_damping>
         </link>
     </model>
 </sdf>
