@@ -53,6 +53,9 @@ namespace m1_plugins
         ignition::gazebo::Entity link_entity_{ignition::gazebo::kNullEntity};
 
         // --- ROS2 Side ---
+        std::atomic<double> throttle_{0.0};
+        std::atomic<bool> running_{false};
+
         std::shared_ptr<rclcpp::Node> node_;
         rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr sub_;
         std::thread spin_thread_;
