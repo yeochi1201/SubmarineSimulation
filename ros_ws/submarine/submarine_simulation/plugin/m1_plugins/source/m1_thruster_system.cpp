@@ -155,4 +155,4 @@ IGNITION_ADD_PLUGIN
   m1_plugins::ThrusterSystem::ISystemPreUpdate
 )
 
-IGNITION_ADD_PLUGIN_ALIAS(m1_plugins::ThrusterSystem, "m1_plugins::THrusterSystem")
+IGNITION_ADD_PLUGIN_ALIAS(m1_plugins::ThrusterSystem, "m1_plugins::ThrusterSystem")

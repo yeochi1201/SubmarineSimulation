@@ -45,7 +45,7 @@
             <angular_damping>0.01</angular_damping>
         </link>
 
-        <plugin filename = "lib_m1_thruster.so" name = "m1::ThrusterSystem">
+        <plugin filename = "lib_m1_thruster_system.so" name = "m1_plugins::ThrusterSystem">
             <link_name>base_link</link_name>
             <axis>1 0 0</axis> <!--forward-->
             <max_thrust>2.0e7</max_thrust>
