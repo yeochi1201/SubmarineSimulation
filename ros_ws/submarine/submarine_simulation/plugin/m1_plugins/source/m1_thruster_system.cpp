@@ -1,12 +1,17 @@
 #include "m1_thruster_system.hpp"
 
+#include <atomic>
 #include <gz/sim/Entity.hh>
+#include <gz/sim/System.hh>
 #include <ignition/common/Console.hh>
 #include <ignition/gazebo/Link.hh>
 #include <ignition/gazebo/Model.hh>
 #include <ignition/gazebo/components/Name.hh>
-#include <ignition/gazebo/components/World.hh>
+#include <ignition/gazebo/components/Pose.hh>
 #include <ignition/plugin/Register.hh>
+
+#include <rclcpp/executors/single_threaded_executor.hpp>
+#include <std_msgs/msg/detail/float64__struct.hpp>
 
 namespace ign = ignition::gazebo;
 using Vector3d = ignition::math::Vector3d;
@@ -59,9 +64,75 @@ namespace m1_plugins
 
     //Find Target Link Entity By name
     link_entity_ = ign::kNullEntity;
-    model.EachLink(_ecm, [&](const ign::Entity &linkEnt)->
+    const auto links = model.Links(_ecm);
+    for(const auto &linkEnt : links)
     {
       auto nameComp = _ecm.Component<ign::components::Name>(linkEnt);
-    })
+      if(nameComp && nameComp->Data() == link_name_)
+      {
+        link_entity_ = linkEnt;
+        break;
+      }
+    }
+
+    if(link_entity_ == ign::kNullEntity)
+    {
+      ignerr << "[ThrusterSystem] Link Not Found: " << link_name_ << "\n";
+      return;
+    }
+
+    // ROS2 Init
+    if(!rclcpp::ok())
+    {
+      int argc = 0;
+      char **argv = nullptr;
+      rclcpp::init(argc, argv);
+    }
+
+    node_ = std::make_shared<rclcpp::Node>("m1_thruster_system");
+    sub_ = node_->create_subscription<std_msgs::msg::Float64>(topic_, 
+      rclcpp::QoS(10), [&](const std_msgs::msg::Float64::SharedPtr msg)
+    {
+      double t = Clamp(msg->data, -1.0, -1.0);
+      throttle_.store(t, std::memory_order_relaxed);
+    });
+
+    //Spring ROS Callbacks
+    running_.store(true, std::memory_order_relaxed);
+    spin_thread_ = std::thread([this]()
+    {
+      rclcpp::executors::SingleThreadedExecutor exec;
+      exec.add_node(node_);
+      
+      while(running_.load(std::memory_order_relaxed))
+      {
+        exec.spin_some();
+        std::this_thread::sleep_for(std::chrono::milliseconds(2));
+      }
+
+      exec.remove_node(node_);
+    });
+
+    ignmsg  << "[ThrusterSystem] Configured"
+            << " link = " << link_name_
+            << " topic = " << topic_
+            << " axis_body = " << axis_body_
+            << " max_thrust = " << max_thrust_
+            << "\n";
+  }
+
+  void ThrusterSystem::PreUpdate( const ign::UpdateInfo &_info, 
+                                  ign::EntityComponentManager &_ecm)
+  {
+    if(_info.paused || link_entity_ == ign::kNullEntity) return;
+
+    const double t = throttle_.load(std::memory_order_relaxed);
+    if(std::abs(t) < 1e-9) return;
+
+    // Body Frame Force
+    const Vector3d f_body = axis_body_ * (t * max_thrust_);
+
+    // Convert to world frame using current world pose rotation
+
   }
 }
