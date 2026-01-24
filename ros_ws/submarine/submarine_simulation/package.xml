@@ -7,7 +7,20 @@
     <maintainer email = "yeochi1201@gmail.com">yeochi1201</maintainer>
     <license>Apache-2.0</license>
 
+
+    <!-- Build System -->
     <buildtool_depend>ament_cmake</buildtool_depend>
+
+    <!-- ROS2 Dependencies for Plugin-->
+    <depend>rclcpp</depend>
+    <depend>std_msgs</depend>
+
+    <!-- Gazebo Fortress / Ignition Gazebo 6 Dependencies-->
+    <depend>ignition-gazebo6</depend>
+    <depend>ignition-math6</depend>
+    <depend>ignition-common4</depend>
+    <depend>ignition-plugin1</depend>
+
 
     <export>
         <build_type>ament_cmake</build_type>
